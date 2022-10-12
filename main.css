@@ -1,0 +1,83 @@
+:root {
+    --background: green;
+    --on-background: aliceblue;
+}
+html {
+    font-size:  x-large;
+}
+
+body, div, section {
+    padding: 0;
+    margin: 0;
+}
+.main-content {
+    width: 70vw;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+#video-frame {
+    box-shadow: 0 0 0.4rem gray;
+    border-radius: 10px;
+    border: 0.2rem solid gray;
+    margin: 1rem;
+}
+
+.disclamers {
+    font-size: 0.6rem;
+    color: gray;
+}
+
+.center {
+    justify-content: center;
+    align-items: center;
+}
+
+.flex {
+    display: flex;
+}
+.boarder {
+    border: 0.2rem solid darkslategray;
+    border-radius: 30px;
+}
+button {
+    background-color: var(--background);
+    padding: 0.5rem 4rem;
+    margin: 1rem 0;
+    color: var(--on-background);
+    border-radius: 0.75rem;
+    box-shadow: 0 0 0.5rem var(--background);
+    text-shadow: none;
+    border-style: none;
+    font-size: 1.5rem;
+}
+
+.small-margin {
+    margin: 2rem;
+}
+
+.small-margin-sides {
+    margin: 0 2rem;
+}
+
+p {
+    padding: 0.1rem 0;
+    text-align: center  ;
+}
+
+.title {
+    text-align: center;
+    width: 50vw;
+}
+
+.medium-padding {
+    padding: 1rem 0;
+}
+
+.color-blue {
+    color: blue;
+}
