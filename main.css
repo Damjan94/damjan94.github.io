@@ -3,7 +3,7 @@
     --on-background: aliceblue;
 }
 html {
-    font-size:  x-large;
+    font-size:  large;
 }
 
 body, div, section {
@@ -11,7 +11,7 @@ body, div, section {
     margin: 0;
 }
 .main-content {
-    width: 70vw;
+    width: 100vw;
 }
 
 .flex-col {
@@ -65,8 +65,8 @@ button {
 }
 
 p {
-    padding: 0.1rem 0;
-    text-align: center  ;
+    padding: 0;
+    text-align: start;
 }
 
 .title {
@@ -81,3 +81,19 @@ p {
 .color-blue {
     color: blue;
 }
+
+@media screen and (min-width: 800px) {
+    html {
+        font-size: x-large;
+    }
+
+    .main-content {
+        width: 70vw;
+    }
+
+    p {
+        padding: 0.1rem 0;
+        text-align: center  ;
+    }
+}
+
