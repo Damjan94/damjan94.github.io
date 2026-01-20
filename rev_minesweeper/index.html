@@ -1,0 +1,66 @@
+ <!DOCTYPE html>
+<html>
+ <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>reverse minesweeper</title>
+    <script src="main.js"></script>
+    <style>
+      body{
+        display:flex;
+        flex-wrap: wrap;
+        --item_count:10;
+      }
+      #game .background-red {
+        background-color: red;
+      }
+      #game {
+        display: grid;
+        width: min(90vh, 90vw);
+        height: min(90vh, 90vw);
+        grid-template-columns: repeat( var(--item_count), auto);
+      }
+      #game div {
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background-color: gray;
+        background-size: 100%;
+        user-select: none;
+      }
+      #game div:hover {
+        background-color: darkgray;
+      }
+
+      .bomb-background {
+         background-image: url("./bomb.svg");
+      }
+
+      .bomb{}
+    
+      .content-hidden {
+        content-visibility: hidden;
+      }
+      .display-block {
+        display: block;
+      }
+      p {
+        max-width: 80ch;
+      }
+    </style>
+  </head>
+<body>
+  <div id="game"></div>
+  <div>
+    <label for="board_size">Board size:<span id="square_count">3</span></label>
+    <input id="board_size" type="range" min=3 max=15 value=3/>
+    <button id="finish">Finish</button>
+    <output id="win" class="display-block content-hidden">Congrats, you solved the game. <button id="play_again">Play again?</button></output>
+    <section>
+      <h2>How to play</h2>
+      <p>The goal of the game is to determine the danger of each tile. Each ring adds 1 point to tiles surrounding it. Incorrect tiles will be highlighted in red.</p>
+      <p>High score will be implemented at a later date.</p>
+    </section>
+  </div>
+</body>
+</html> 
