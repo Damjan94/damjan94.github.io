@@ -1,7 +1,22 @@
 
 window.addEventListener("load", main);
 
+function drawTutorial(board) {
+  const tutorial_grid_size = 3;
+  const squares = createSquares(tutorial_grid_size);
+  squares.forEach((square) => {
+    board.appendChild(square);
+    if(isBomb(square)) {
+      square.classList.add("bomb-background");
+    }
+  });
+  const solution = solveBoard(board, tutorial_grid_size);
+  solution.forEach((val, i) => {
+    board.children[i].innerHTML=val;
+  });
+}
 function main(){
+  drawTutorial(document.getElementById("tutorial"));
   const board = document.getElementById("game")
   let count = Number.parseInt(document.getElementById("board_size").value);
   board.addEventListener("newgame", () => {
@@ -18,14 +33,16 @@ function main(){
   const victory_message = document.getElementById("win");
   const finish_button = document.getElementById("finish");
   finish_button.addEventListener("click", () => {
-    finish_button.attributes.setNamedItem(document.createAttribute("disabled"));
+    // finish_button.attributes.setNamedItem(document.createAttribute("disabled"));
+    finish_button.disabled = true;
     const diff = finishGame(board, count);
     if(diff.length != 0) {
       diff.forEach((i) => {
         board.childNodes[i].classList.add("background-red");
       });
         setTimeout(() => {
-          finish_button.attributes.removeNamedItem("disabled");
+          // finish_button.attributes.removeNamedItem("disabled");
+          finish_button.disabled=false;
           diff.forEach((i) => {
             board.childNodes[i].classList.remove("background-red");
           })
@@ -33,12 +50,15 @@ function main(){
       
     } else {
       victory_message.classList.remove("content-hidden");
+      board.classList.add("border-green");
     }
   });
 
   document.getElementById("play_again").addEventListener("click", () => {
-    finish_button.attributes.removeNamedItem("disabled");
+    // finish_button.attributes.removeNamedItem("disabled");
+    finish_button.disabled=false;
     victory_message.classList.add("content-hidden");
+    board.classList.remove("border-green");
     board.dispatchEvent(newgameEvent);
   });
   board.dispatchEvent(newgameEvent);
@@ -48,6 +68,7 @@ function generateBoard(board, count) {
   board.innerHTML=""
   const squares = createSquares(count)
   squares.forEach((square) => {
+    addOnClickListener(square);
     board.appendChild(square);
     if(isBomb(square)) {
       square.classList.add("bomb-background");
@@ -94,7 +115,6 @@ function createSquares(count) {
         square.classList.add("bomb");
       } 
       square.innerHTML = 0;
-      addOnClickListener(square);
       squares.push(square);
     }
   }
