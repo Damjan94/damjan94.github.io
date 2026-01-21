@@ -18,6 +18,10 @@
       .border-green {
         border: green solid min(1vw, 1vh);
       }
+
+      .border-red {
+        border: red solid min(1vw, 1vh);
+      }
       #game, #tutorial {
         margin:3px;
         display: grid;
@@ -68,10 +72,10 @@
     <button id="finish">Finish</button>
     <output id="win" class="display-block content-hidden">Congrats, you solved the game. <button id="play_again">Play again?</button></output>
     <section>
+      <h2>High score <span id="score" >0</span></h2>
       <h2>How to play</h2>
       <p>The goal of the game is to determine the danger of each tile. Each ring adds 1 point to tiles surrounding it. Incorrect tiles will be highlighted in red. Click to add a point, long click to remove a point.</p>
       <div id="tutorial"></div>
-      <p>High score will be implemented at a later date.</p>
     </section>
   </div>
 </body>
