@@ -16,6 +16,44 @@ function drawTutorial(board) {
   });
 }
 
+
+function getHighScores(minBoardSize, maxBoardSize) {
+  const scores = [];
+  for(let i = minBoardSize; i <=maxBoardSize; i++) {
+    const score = Number.parseInt(localStorage.getItem("highscore-"+i) || 0);
+    scores.push(score);
+  }
+  return scores;
+}
+
+function createHighScoreTableRow(boardSize, score) {
+  const tr = document.createElement("tr");
+  const td_size = document.createElement("td");
+  const td_score= document.createElement("td");
+  td_size.innerHTML = boardSize;
+  td_score.innerHTML= score;
+  tr.appendChild(td_size);
+  tr.appendChild(td_score);
+  return tr;
+}
+
+function populateHighScoreTable(table, scores) {
+  table.innerHTML="";
+  const heading = document.createElement("tr");
+  const board_size_heading = document.createElement("th");
+  const score_heading = document.createElement("th");
+  board_size_heading.innerHTML="Board size";
+  score_heading.innerHTML="Score";
+  heading.appendChild(board_size_heading);
+  heading.appendChild(score_heading);
+  table.appendChild(heading);
+  scores.forEach((score, i) => {
+    if(score > 0) {
+      table.appendChild(createHighScoreTableRow(i + 3, score));
+    }
+  });
+}
+
 function createCurrentScore(el) {
   let currentScore = 0;
   function increment() {
@@ -26,25 +64,43 @@ function createCurrentScore(el) {
     currentScore = 0;
     el.innerHTML = currentScore;
   }
-  return [increment, reset];
+  function getCurrentScore() {
+    return currentScore;
+  }
+  return [increment, reset, getCurrentScore];
 }
 const newgameEvent = new CustomEvent("newgame");
 const incorrectguessEvent = new CustomEvent("incorrectguess");
 function main(){
   drawTutorial(document.getElementById("tutorial"));
+  let scores = getHighScores(3, 15);
+  const high_score_table = document.getElementById("scores");
+  populateHighScoreTable(high_score_table, scores);
   const board = document.getElementById("game")
   const board_size = document.getElementById("board_size");
   let count = Number.parseInt(localStorage.getItem("userBoardSize") || board_size.valueAsNumber);
   board_size.value=count; // set the value from local storage, if exists
-  const [incrementCurrentScore, resetCurrentScore] = createCurrentScore(document.getElementById("score"));
+  const [incrementCurrentScore, resetCurrentScore, getCurrentScore] = createCurrentScore(document.getElementById("score"));
   board.addEventListener("newgame", () => {
     board.classList.remove("border-green");
     board.classList.remove("border-red");
 
+    scores[count-3] = Math.max(scores[count-3], getCurrentScore());
+    populateHighScoreTable(high_score_table, scores);
+    let current_high_score = Number.parseInt(localStorage.getItem("highscore-"+count) || 0);
+    if(isNaN(current_high_score)) {
+      current_high_score = 0;
+    }
+    localStorage.setItem("highscore-"+count, Math.max(current_high_score, scores[count-3]));
     generateBoard(board, count); //TEST can this be clicked while not visible?
   });
   board.addEventListener("incorrectguess", () => {
     board.classList.add("border-red");
+    let current_high_score = Number.parseInt(localStorage.getItem("highscore-"+count) || 0);
+    if(isNaN(current_high_score)) {
+      current_high_score = 0;
+    }
+    localStorage.setItem("highscore-"+count, Math.max(current_high_score, getCurrentScore()));
     resetCurrentScore();
   });
   board_size.addEventListener("change", (e) => {
