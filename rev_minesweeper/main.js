@@ -15,21 +15,45 @@ function drawTutorial(board) {
     board.children[i].innerHTML=val;
   });
 }
+
+function createCurrentScore(el) {
+  let currentScore = 0;
+  function increment() {
+    currentScore+=1;
+    el.innerHTML = currentScore;
+  }
+  function reset() {
+    currentScore = 0;
+    el.innerHTML = currentScore;
+  }
+  return [increment, reset];
+}
+const newgameEvent = new CustomEvent("newgame");
+const incorrectguessEvent = new CustomEvent("incorrectguess");
 function main(){
   drawTutorial(document.getElementById("tutorial"));
   const board = document.getElementById("game")
-  let count = Number.parseInt(document.getElementById("board_size").value);
+  const board_size = document.getElementById("board_size");
+  let count = Number.parseInt(localStorage.getItem("userBoardSize") || board_size.valueAsNumber);
+  board_size.value=count; // set the value from local storage, if exists
+  const [incrementCurrentScore, resetCurrentScore] = createCurrentScore(document.getElementById("score"));
   board.addEventListener("newgame", () => {
+    board.classList.remove("border-green");
+    board.classList.remove("border-red");
+
     generateBoard(board, count); //TEST can this be clicked while not visible?
   });
-  const square_count = document.getElementById("square_count");
-  const newgameEvent = new CustomEvent("newgame");
-  document.getElementById("board_size").addEventListener("change", (e) => {
-    square_count.innerHTML= e.target.value;
-    count = Number.parseInt(e.target.value);
-    board.dispatchEvent(newgameEvent);
+  board.addEventListener("incorrectguess", () => {
+    board.classList.add("border-red");
+    resetCurrentScore();
   });
-
+  board_size.addEventListener("change", (e) => {
+    count = e.target.valueAsNumber;
+    localStorage.setItem("userBoardSize", count);
+    board.dispatchEvent(newgameEvent);
+    resetCurrentScore();
+  });
+  
   const victory_message = document.getElementById("win");
   const finish_button = document.getElementById("finish");
   finish_button.addEventListener("click", () => {
@@ -37,6 +61,7 @@ function main(){
     finish_button.disabled = true;
     const diff = finishGame(board, count);
     if(diff.length != 0) {
+      board.dispatchEvent(incorrectguessEvent);
       diff.forEach((i) => {
         board.childNodes[i].classList.add("background-red");
       });
@@ -51,6 +76,7 @@ function main(){
     } else {
       victory_message.classList.remove("content-hidden");
       board.classList.add("border-green");
+      incrementCurrentScore();
     }
   });
 
@@ -58,7 +84,6 @@ function main(){
     // finish_button.attributes.removeNamedItem("disabled");
     finish_button.disabled=false;
     victory_message.classList.add("content-hidden");
-    board.classList.remove("border-green");
     board.dispatchEvent(newgameEvent);
   });
   board.dispatchEvent(newgameEvent);
