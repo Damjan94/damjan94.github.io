@@ -67,14 +67,19 @@
       p {
         max-width: 80ch;
       }
+      #finish {
+        width: 20ch;
+        height: 10ch;
+        margin: 5ch;
+      }
     </style>
   </head>
 <body>
   <div id="game"></div>
   <div>
+    <button id="finish">Finish</button><br/>
     <label for="board_size">Board size</label>
     <input id="board_size" type="range" min=3 max=15 value="3" />
-    <button id="finish">Finish</button>
     <output id="win" class="display-block content-hidden">Congrats, you solved the game.</output>
     <section>
       <h2>High scores</h2>
