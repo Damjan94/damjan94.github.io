@@ -7,9 +7,11 @@
     <script src="main.js"></script>
     <style>
       body{
+        background-color: darkgray;
         display:flex;
         flex-wrap: wrap;
         --item_count:3;
+        color: hsl(40, 30%, 40%);
       }
       #game .background-red {
         background-color: red;
@@ -39,12 +41,15 @@
         display:flex;
         justify-content:center;
         align-items:center;
-        background-color: gray;
+        background-color: hsl(280, 36%, 35%);
         background-size: 100%;
         user-select: none;
       }
+      #game div {
+        border-radius: 30px;
+      }
       #game div:hover {
-        background-color: darkgray;
+        background-color: hsl(50, 80%, 70%);
       }
 
       .bomb-background {
