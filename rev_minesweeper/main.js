@@ -113,7 +113,6 @@ function main(){
   const victory_message = document.getElementById("win");
   const finish_button = document.getElementById("finish");
   finish_button.addEventListener("click", () => {
-    // finish_button.attributes.setNamedItem(document.createAttribute("disabled"));
     finish_button.disabled = true;
     const diff = finishGame(board, count);
     if(diff.length != 0) {
@@ -121,27 +120,25 @@ function main(){
       diff.forEach((i) => {
         board.childNodes[i].classList.add("background-red");
       });
-        setTimeout(() => {
-          // finish_button.attributes.removeNamedItem("disabled");
-          finish_button.disabled=false;
-          diff.forEach((i) => {
-            board.childNodes[i].classList.remove("background-red");
-          })
-        }, 1000);
+      setTimeout(() => {
+        finish_button.disabled=false;
+        diff.forEach((i) => {
+          board.childNodes[i].classList.remove("background-red");
+        })
+      }, 1000);
       
     } else {
       victory_message.classList.remove("content-hidden");
       board.classList.add("border-green");
       incrementCurrentScore();
+      setTimeout(() => {
+        finish_button.disabled=false;
+        victory_message.classList.add("content-hidden");
+        board.dispatchEvent(newgameEvent);
+      }, 1000);
     }
   });
 
-  document.getElementById("play_again").addEventListener("click", () => {
-    // finish_button.attributes.removeNamedItem("disabled");
-    finish_button.disabled=false;
-    victory_message.classList.add("content-hidden");
-    board.dispatchEvent(newgameEvent);
-  });
   board.dispatchEvent(newgameEvent);
 }
 function generateBoard(board, count) {
